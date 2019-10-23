@@ -7,6 +7,7 @@ use App\Tools\Tools;
 class wechatController extends Controller
 {
     public $tools;
+
     public function __construct(Tools $tools)
     {
         $this->tools = $tools;
@@ -19,6 +20,7 @@ class wechatController extends Controller
         $data = ['appid'=>env('WECHAT_APPID')];
         $this->curl_post($url,json_encode($data));
     }
+
 	public function get_user_list(Request $request)
     {
         $req = $request->all();
@@ -36,6 +38,7 @@ class wechatController extends Controller
         }
         return view('Wechat.wechat_user_list',['data'=>$last_info,'tagid'=>isset($req['tagid'])?$req['tagid']:'']);
     }
+
     public function get_user_detail(request $request)
     {
         $access_token = $this->get_access_token();
@@ -46,10 +49,12 @@ class wechatController extends Controller
 //       dd($data);
         return view("wechat/wechat_user_detail",['data'=>$data]);
     }
+
     public function get_access_token()
     {
         return $this->get_wechat_access_token();
     }
+
     public function get_wechat_access_token()
     {
         $redis = new \Redis();
@@ -67,10 +72,12 @@ class wechatController extends Controller
             return $re['access_token'];
         }
     }
+
     public function tag()
     {
         return view('Wechat.tagadd');
     }
+
     public function add_tag(Request $request)
     {
         $req = $request->all();
@@ -84,6 +91,7 @@ class wechatController extends Controller
         $result = json_decode($re,1);
         return redirect('/wechat/taglist');
     }
+
     public function tag_list()
     {
         $url = 'https://api.weixin.qq.com/cgi-bin/tags/get?access_token='.$this->tools->get_wechat_access_token();
@@ -91,6 +99,7 @@ class wechatController extends Controller
         $result = json_decode($re,1);
         return view('Wechat.tag_list',['info'=>$result['tags']]);
     }
+
     public function del_tag(Request $request)
     {
         $url="https://api.weixin.qq.com/cgi-bin/tags/delete?access_token=".$this->tools->get_wechat_access_token();
@@ -104,6 +113,7 @@ class wechatController extends Controller
         $re=json_decode($re,1);
         return redirect('/wechat/taglist');
     }
+
     public function edit_tag(Request $request)
     {
         $id=$request->id;
@@ -123,6 +133,7 @@ class wechatController extends Controller
             }
         }
     }
+
     public function do_edit_tag(Request $request)
     {
         $name=$request->all(['name']);
@@ -141,6 +152,7 @@ class wechatController extends Controller
         $re=json_decode($re,1);
         return redirect('/wechat/taglist');
     }
+
     //用户打标签
     public function usertaglist(Request $request)
     {
@@ -154,6 +166,7 @@ class wechatController extends Controller
         $result = json_decode($re,1);
         return redirect('/wechat/taglist');
     }
+
     //标签下粉丝列表
     public function user_tag(Request $request)
     {
@@ -168,11 +181,13 @@ class wechatController extends Controller
         // dd($result);
         return view('Wechat.user_tag',['data'=>$result['data']['openid']]);
     }
+
     //推送消息
     public function push_tag_message(Request $request)
     {
         return view('Wechat.pushtag',['tagid'=>$request->all()['tagid']]);
     }
+    
     //推送消息操作
     public function do_push_tag_message(Request $request)
     {
@@ -190,6 +205,6 @@ class wechatController extends Controller
         ];
         $re = $this->tools->curl_post($url,json_encode($data));
         $result = json_decode($re,1);
-        dd($result);
+        return redirect('/wechat/taglist');
     }
 }

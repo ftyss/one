@@ -30,4 +30,4 @@ Route::post('/wechat/edit_tag','wechatController@do_edit_tag'); //改操作
 Route::post('/wechat/usertaglist','wechatController@usertaglist'); //用户打标签
 Route::get('/wechat/user_tag','wechatController@user_tag'); //标签粉丝列表
 Route::get('/wechat/pushtag','wechatController@push_tag_message'); //推送消息
-Route::post('/wechat/do_push','wechatController@do_push_tag_message'); //推送消息
+Route::post('/wechat/do_push','wechatController@do_push_tag_message'); //推送消息操作
