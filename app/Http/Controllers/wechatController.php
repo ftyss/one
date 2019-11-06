@@ -38,7 +38,7 @@ class wechatController extends Controller
         }
         return view('Wechat.wechat_user_list',['data'=>$last_info,'tagid'=>isset($req['tagid'])?$req['tagid']:'']);
     }
-
+ 
     public function get_user_detail(request $request)
     {
         $access_token = $this->get_access_token();
@@ -113,7 +113,7 @@ class wechatController extends Controller
         $re=json_decode($re,1);
         return redirect('/wechat/taglist');
     }
-
+ 
     public function edit_tag(Request $request)
     {
         $id=$request->id;
@@ -200,7 +200,7 @@ class wechatController extends Controller
             ],
             'text'=>[
                 'content'=>$req['message']
-            ],
+            ],   
             'msgtype'=>'text'
         ];
         $re = $this->tools->curl_post($url,json_encode($data));
