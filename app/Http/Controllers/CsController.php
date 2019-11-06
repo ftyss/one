@@ -9,7 +9,7 @@ class CsController extends Controller
     //添加页面
     public function  add()
     {
-        echo 1;
+        
     }
     
 }
